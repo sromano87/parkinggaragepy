@@ -1,5 +1,6 @@
 import mock.GPIO as GPIO
-import mock.RTC as RCT
+import mock.RTC as RTC
+import time
 
 
 class ParkingGarage:
@@ -18,12 +19,24 @@ class ParkingGarage:
         """
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
+        GPIO.setup(self.INFRARED_PIN1, GPIO.IN)
+        GPIO.setup(self.INFRARED_PIN2, GPIO.IN)
+        GPIO.setup(self.INFRARED_PIN3, GPIO.IN)
+        GPIO.setup(self.RTC_PIN, GPIO.IN)
+        GPIO.setup(self.SERVO_PIN, GPIO.OUT)
+        GPIO.setup(self.LED_PIN, GPIO.OUT)
+        self.rtc = RTC.RTC(self.RTC_PIN)
+        self.pwm = GPIO.PWM(self.SERVO_PIN, 50)
+        self.pwm.start(0)
+        self.door_open = False
+        self.light_on = False
 
     def check_occupancy(self, pin: int) -> bool:
         """
         Checks whether one of the infrared distance sensor detects something in front of it.
-        :param pin: The data pin of the sensor that is being checked (e.g., INFRARED_PIN1).
+        :param pin: The pin of the sensor that is being checked (e.g., INFRARED_PIN1).
         :return: True if the infrared sensor detects something, False otherwise.
+        :raise ParkingGarageError: if the pin is not that of any infrared distance sensors.
         """
 
     def get_occupied_spots(self) -> int:
@@ -47,11 +60,13 @@ class ParkingGarage:
     def open_garage_door(self) -> None:
         """
         Opens the garage door using the servo motor
+        :raise ParkingGarageError: if the door is already open
         """
 
     def close_garage_door(self) -> None:
         """
         Closes the garage door using the servo motor
+        :raise ParkingGarageError: if the door is already closed
         """
 
     def turn_light_on(self) -> None:
@@ -69,6 +84,11 @@ class ParkingGarage:
         Changes the servo motor's angle by passing him the corresponding PWM duty cycle signal
         :param duty_cycle: the length of the duty cycle
         """
+        GPIO.output(self.SERVO_PIN, GPIO.HIGH)
+        self.pwm.ChangeDutyCycle(duty_cycle)
+        time.sleep(1)
+        GPIO.output(self.SERVO_PIN, GPIO.LOW)
+        self.pwm.ChangeDutyCycle(0)
 
 
 class ParkingGarageError(Exception):

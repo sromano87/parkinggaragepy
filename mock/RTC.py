@@ -2,11 +2,12 @@ from datetime import datetime
 
 
 class RTC:
+
     def __init__(self, RTC_PIN):
         self.pin = RTC_PIN
 
-    @staticmethod
-    def get_current_time_string() -> str:
+
+    def get_current_time_string(self) -> str:
         """
         Retrieves the current time
         :return: The time as a string in the format "hh:mm:ss"
@@ -15,8 +16,7 @@ class RTC:
         current_time = now.strftime("%H:%M:%S")
         return current_time
 
-    @staticmethod
-    def get_current_day() -> str:
+    def get_current_day(self) -> str:
         """
         Retrieves the current day of the week
         :return: The day as an uppercase string
