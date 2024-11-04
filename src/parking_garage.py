@@ -14,9 +14,6 @@ class ParkingGarage:
     LED_PIN = 18
 
     def __init__(self):
-        """
-        Constructor
-        """
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
         GPIO.setup(self.INFRARED_PIN1, GPIO.IN)
@@ -27,7 +24,9 @@ class ParkingGarage:
         GPIO.setup(self.LED_PIN, GPIO.OUT)
         self.rtc = RTC.RTC(self.RTC_PIN)
         self.servo = GPIO.PWM(self.SERVO_PIN, 50)
-        self.servo.start(0)
+        self.servo.start(2)  # Starts generating PWM on the pin with a duty cycle equal to 2% (corresponding to 0 degree)
+        time.sleep(1)  # Waits 1 second so that the servo motor has time to make the turn
+        self.servo.ChangeDutyCycle(0)  # Sets duty cycle equal to 0% (corresponding to a low signal)
         self.door_open = False
         self.light_on = False
 
