@@ -1,6 +1,9 @@
-import mock.GPIO as GPIO
-import mock.RTC as RTC
 import time
+try:
+    import RPi.GPIO as GPIO
+except:
+    import mock.GPIO as GPIO
+    import mock.RTC as RTC
 
 
 class ParkingGarage:
@@ -29,12 +32,13 @@ class ParkingGarage:
         self.servo.ChangeDutyCycle(0)  # Sets duty cycle equal to 0% (corresponding to a low signal)
         self.door_open = False
         self.light_on = False
+        GPIO.output(self.LED_PIN, False)
 
     def check_occupancy(self, pin: int) -> bool:
         # To be implemented
         pass
 
-    def get_occupied_spots(self) -> int:
+    def get_number_occupied_spots(self) -> int:
         # To be implemented
         pass
 
@@ -50,18 +54,18 @@ class ParkingGarage:
         # To be implemented
         pass
 
-    def turn_light_on(self) -> None:
+    def turn_on_light(self) -> None:
         # To be implemented
         pass
 
-    def turn_light_off(self) -> None:
+    def turn_off_light(self) -> None:
         # To be implemented
         pass
 
     def change_servo_angle(self, duty_cycle):
         """
         Changes the servo motor's angle by passing it the corresponding PWM duty cycle
-        :param duty_cycle: the width of the PWM duty cycle (it's a percentage value)
+        :param duty_cycle: the PWM duty cycle (it's a percentage value)
         """
         self.servo.ChangeDutyCycle(duty_cycle)
         time.sleep(1)
