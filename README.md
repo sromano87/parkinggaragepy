@@ -5,7 +5,7 @@ The system includes the following sensors and actuators:
 * Three infrared distance sensors, one for each parking spot;
 * A servo motor to open/close the garage door;
 * A Real Time Clock (RTC) to handle time operations;
-* A smart lightbulb.
+* A red smart lightbulb to indicate when the garage is full.
 
 The communication between the main board and the other components happens through GPIO pins. The communication is already configured in the BOARD mode (i.e., GPIO pins are referred to by their physical number on the board).
 
