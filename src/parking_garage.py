@@ -1,9 +1,12 @@
 import time
+from datetime import datetime
+
 try:
     import RPi.GPIO as GPIO
+    import SDL_DS3231
 except:
     import mock.GPIO as GPIO
-    import mock.RTC as RTC
+    import mock.SDL_DS3231 as SDL_DS3231
 
 
 class ParkingGarage:
@@ -12,7 +15,6 @@ class ParkingGarage:
     INFRARED_PIN1 = 11
     INFRARED_PIN2 = 12
     INFRARED_PIN3 = 13
-    RTC_PIN = 15
     SERVO_PIN = 16
     LED_PIN = 18
 
@@ -22,16 +24,15 @@ class ParkingGarage:
         GPIO.setup(self.INFRARED_PIN1, GPIO.IN)
         GPIO.setup(self.INFRARED_PIN2, GPIO.IN)
         GPIO.setup(self.INFRARED_PIN3, GPIO.IN)
-        GPIO.setup(self.RTC_PIN, GPIO.IN)
         GPIO.setup(self.SERVO_PIN, GPIO.OUT)
         GPIO.setup(self.LED_PIN, GPIO.OUT)
-        self.rtc = RTC.RTC(self.RTC_PIN)
+        self.rtc = SDL_DS3231.SDL_DS3231(1, 0x68)
         self.servo = GPIO.PWM(self.SERVO_PIN, 50)
         self.servo.start(2)  # Starts generating PWM on the pin with a duty cycle equal to 2% (corresponding to 0 degree)
         time.sleep(1)  # Waits 1 second so that the servo motor has time to make the turn
         self.servo.ChangeDutyCycle(0)  # Sets duty cycle equal to 0% (corresponding to a low signal)
         self.door_open = False
-        self.light_on = False
+        self.red_light_on = False
         GPIO.output(self.LED_PIN, False)
 
     def check_occupancy(self, pin: int) -> bool:
@@ -42,7 +43,7 @@ class ParkingGarage:
         # To be implemented
         pass
 
-    def calculate_parking_fee(self, entry_time: str) -> float:
+    def calculate_parking_fee(self, entry_time: datetime) -> float:
         # To be implemented
         pass
 
@@ -54,11 +55,15 @@ class ParkingGarage:
         # To be implemented
         pass
 
-    def turn_on_light(self) -> None:
+    def turn_on_red_light(self) -> None:
         # To be implemented
         pass
 
-    def turn_off_light(self) -> None:
+    def turn_off_red_light(self) -> None:
+        # To be implemented
+        pass
+
+    def manage_red_light(self) -> None:
         # To be implemented
         pass
 
