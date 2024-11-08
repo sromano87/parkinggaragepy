@@ -2,8 +2,12 @@
 Mock Library for RPi.GPIO
 """
 
+import time
 import logging
 import os
+
+from src import parking_garage
+from src.parking_garage import ParkingGarage
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +76,8 @@ def setmode(mode):
     BCM   - Use Broadcom GPIO 00..nn numbers
     """
     # GPIO = GPIO()
+    if parking_garage.DEPLOYMENT:
+        time.sleep(1)
     if(mode == BCM):
         setModeDone = True
         _mode = mode
