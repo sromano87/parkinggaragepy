@@ -2,7 +2,6 @@
 Mock Library for RPi.GPIO
 """
 
-import time
 import logging
 import os
 
@@ -73,7 +72,6 @@ def setmode(mode):
     BCM   - Use Broadcom GPIO 00..nn numbers
     """
     # GPIO = GPIO()
-    time.sleep(1)
     if(mode == BCM):
         setModeDone = True
         _mode = mode

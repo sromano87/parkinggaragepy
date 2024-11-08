@@ -1,9 +1,12 @@
 import time
 from datetime import datetime
 
+DEPLOYMENT = False # This variable is to understand whether you are deploying on the actual hardware
+
 try:
     import RPi.GPIO as GPIO
     import SDL_DS3231
+    DEPLOYMENT = True
 except:
     import mock.GPIO as GPIO
     import mock.SDL_DS3231 as SDL_DS3231
@@ -29,7 +32,8 @@ class ParkingGarage:
         self.rtc = SDL_DS3231.SDL_DS3231(1, 0x68)
         self.servo = GPIO.PWM(self.SERVO_PIN, 50)
         self.servo.start(2)  # Starts generating PWM on the pin with a duty cycle equal to 2% (corresponding to 0 degree)
-        time.sleep(1)  # Waits 1 second so that the servo motor has time to make the turn
+        if DEPLOYMENT: # Sleep only if you are deploying on the actual hardware
+            time.sleep(1)  # Waits 1 second so that the servo motor has time to make the turn
         self.servo.ChangeDutyCycle(0)  # Sets duty cycle equal to 0% (corresponding to a low signal)
         self.door_open = False
         self.red_light_on = False
@@ -73,7 +77,8 @@ class ParkingGarage:
         :param duty_cycle: the PWM duty cycle (it's a percentage value)
         """
         self.servo.ChangeDutyCycle(duty_cycle)
-        time.sleep(1)
+        if DEPLOYMENT:  # Sleep only if you are deploying on the actual hardware
+            time.sleep(1)
         self.servo.ChangeDutyCycle(0)
 
 
